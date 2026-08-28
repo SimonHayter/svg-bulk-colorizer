@@ -28,22 +28,29 @@ Perfect for web designers, developers, and branding projects that require massiv
 
 1. Place your master SVG (e.g., `example-logo.svg`) in your working directory. Ensure the path or shape you want to change has a specific fill (like `#FFFFFF`).
 2. Create a `colors.csv` file with no header row. Column 1 should be the color name (e.g., `red-50`), and Column 2 should be the hex code (e.g., `#FEF2F2`).
-3. Run the generation script:
+3. Run these commands or download the ps1 script file:
 
 ```powershell
 $svg = Get-Content -Raw -Path "example-logo.svg"
-$data = Import-Csv -Path "tailwind-color-palette.csv" -Header "ColorName", "HexCode"
+```
 
-foreach ($row in$data) {
-    $name =$row.ColorName
-    $hex =$row.HexCode
+```powershell
+$data = Import-Csv -Path "tailwind-color-palette.csv" -Header "ColorName", "HexCode"
+```
+
+```powershell
+foreach ($row in $data) {
+    $name = $row.ColorName
+    $hex = $row.HexCode
 
     $newContent = $svg -replace "#FFFFFF", $hex
     $fileName = "example-$name-logo.svg"
     
-    Set-Content -Path $fileName -Value$newContent
+    Set-Content -Path $fileName -Value $newContent
 }
 ```
+
+
 ## Optional Convert to PNG
 
 1. Download imagemagick
@@ -55,10 +62,17 @@ winget install ImageMagick.ImageMagick
 2. PNG Batch and Size Generator, ensure you edit the sizes, the more you have, the longer it will take.
 
 ```powershell
-$sizes = @(64, 128, 165, 200, 215, 250, 256, 320, 400, 480, 500, 512, 720, 800, 1024, 2048, 4096)$svgFiles = Get-ChildItem -Filter "*.svg" -Recurse
+$sizes = @(64, 128, 165, 200, 215, 250, 256, 320, 400, 480, 500, 512, 720, 800, 1024, 2048, 4096)
+```
 
-foreach ($file in$svgFiles) {
-    foreach ($size in $sizes) {$newName = "$($file.DirectoryName)\$($file.BaseName)-$size.png"
+```powershell
+$svgFiles = Get-ChildItem -Filter "*.svg" -Recurse
+```
+
+```powershell
+foreach ($file in $svgFiles) {
+    foreach ($size in $sizes) {
+        $newName = "$($file.DirectoryName)\$($file.BaseName)-$size.png"
         magick -background none $file.FullName -resize "${size}x${size}" -quality 95 "png8:$newName"
     }
 }
