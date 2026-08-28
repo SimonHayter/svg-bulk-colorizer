@@ -32,7 +32,7 @@ Perfect for web designers, developers, and branding projects that require massiv
 
 ```powershell
 $svg = Get-Content -Raw -Path "example-logo.svg"
-$data = Import-Csv -Path "colors.csv" -Header "ColorName", "HexCode"
+$data = Import-Csv -Path "tailwind-color-palette.csv" -Header "ColorName", "HexCode"
 
 foreach ($row in$data) {
     $name =$row.ColorName
