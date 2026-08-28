@@ -12,7 +12,7 @@ Perfect for web designers, developers, and branding projects that require massiv
 
 ## Prerequisites
 *   Windows PowerShell
-*   [ImageMagick](https://imagemagick.org/script/download.php) (Must be added to your system PATH)
+*   Optional [ImageMagick](https://imagemagick.org/script/download.php) (Must be added to your system PATH (You need to restart Powershell))
 
 ## Need colors?
 
@@ -43,3 +43,24 @@ foreach ($row in$data) {
     
     Set-Content -Path $fileName -Value$newContent
 }
+```
+## Optional Convert to PNG
+
+1. Download imagemagick
+
+```powershell
+winget install ImageMagick.ImageMagick
+```
+
+2. PNG Batch and Size Generator, ensure you edit the sizes, the more you have, the longer it will take.
+
+```powershell
+$sizes = @(64, 128, 165, 200, 215, 250, 256, 320, 400, 480, 500, 512, 720, 800, 1024, 2048, 4096)$svgFiles = Get-ChildItem -Filter "*.svg" -Recurse
+
+foreach ($file in$svgFiles) {
+    foreach ($size in $sizes) {$newName = "$($file.DirectoryName)\$($file.BaseName)-$size.png"
+        magick -background none $file.FullName -resize "${size}x${size}" -quality 95 "png8:$newName"
+    }
+}
+```
+
